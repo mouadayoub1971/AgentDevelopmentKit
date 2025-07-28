@@ -4,7 +4,7 @@ from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
 
 model = LiteLlm(
- model="openrouter/deepseek/deepseek-r1-0528:free",
+ model="openrouter/thudm/glm-z1-32b:free",
  api_key= os.getenv("OPENROUTER_API_KEY")
 )
 
