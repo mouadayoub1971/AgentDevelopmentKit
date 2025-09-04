@@ -5,7 +5,7 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
 
-load_dotenv()
+load_dotenv(dotenv_path="question_answring_questions/.env")
 
 # where to store state and events 
 session_service_stateful = InMemorySessionService()
@@ -38,7 +38,7 @@ runner = Runner(
 )
 
 new_message = types.Content(
-    role="user", parts=[types.Part(text="What is Brandon's favorite TV show?")]
+    role="user", parts=[types.Part(text="What is Mouad's favorite TV show?")]
 )
 
 for event in runner.run(
