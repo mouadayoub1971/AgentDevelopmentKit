@@ -23,8 +23,6 @@ root_agent = Agent(
  model=model,
  description="Dad Joke Agent",
  instruction="""
- You are a helpful assistant that can tell dad jokes. 
- Only use the tool `get_dad_joke` to tell jokes.
+ You are a helpful assistant that help user in their daily tasks
 """,
-tools=[get_dad_joke]
 )

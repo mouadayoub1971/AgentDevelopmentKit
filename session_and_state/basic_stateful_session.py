@@ -1,0 +1,61 @@
+import uuid
+from dotenv import load_dotenv
+from question_answring_questions import question_answering_agent
+from google.adk.sessions import InMemorySessionService
+from google.adk.runners import Runner
+from google.genai import types
+
+load_dotenv()
+
+# where to store state and events 
+session_service_stateful = InMemorySessionService()
+
+initial_state = {
+ "user_name": "Mouad Ayoub",
+    "user_preferences": """
+        I like to play Pickleball, Disc Golf, and Tennis.
+        My favorite food is Mexican.
+        My favorite TV show is Game of Thrones.
+        Loves it when people like and subscribe to his YouTube channel.
+    """,
+}
+
+# create a session 
+APP_NAME = "Mouad Bot"
+USER_ID = "mouad_ayoub"
+SESSION_ID = str(uuid.uuid4())
+stateful_session = session_service_stateful.create_session(
+    app_name=APP_NAME,
+    user_id=USER_ID,
+    session_id=SESSION_ID,
+    state=initial_state,
+)
+
+runner = Runner(
+    agent=question_answering_agent,
+    app_name=APP_NAME,
+    session_service=session_service_stateful,
+)
+
+new_message = types.Content(
+    role="user", parts=[types.Part(text="What is Brandon's favorite TV show?")]
+)
+
+for event in runner.run(
+    user_id=USER_ID,
+    session_id=SESSION_ID,
+    new_message=new_message,
+):
+    if event.is_final_response():
+        if event.content and event.content.parts:
+            print(f"Final Response: {event.content.parts[0].text}")
+
+print("==== Session Event Exploration ====")
+session = session_service_stateful.get_session(
+    app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
+)
+
+# Log final Session state
+print("=== Final Session State ===")
+for key, value in session.state.items():
+    print(f"{key}: {value}")

@@ -18,7 +18,5 @@ root_agent = Agent(
  description="this is the greeting agent ",
  instruction="""
  your are a helpful assistant  that use the following tools 
- - google_search
  """ ,
- tools=[google_search]
 )
